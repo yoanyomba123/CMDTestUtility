@@ -2,6 +2,8 @@ package Questions;
 
 import java.util.ArrayList;
 
+import com.sun.javafx.scene.control.skin.ChoiceBoxSkin;
+
 import IO.ConsoleOutput;
 import Response.Response;
 
@@ -181,4 +183,45 @@ public class ChoiceQuestion extends Question{
 		
 	}
 	
+	public void edit() {
+		menu.promptEditOne();
+		String userInput = input.getInput();
+		switch(userInput) {
+			case "1":
+				editPrompt();
+				break;
+			case "2":
+				editChoices();
+				break;	
+			default:
+				break;
+		}
+	}
+	
+	private void editPrompt() {
+		output.display("Current Prompt: " + prompt.getPrompt());
+		output.display("Please enter a new prompt to edit \n");
+		String userInputPrompt = input.getInput();
+		prompt.setPrompt(userInputPrompt);
+		output.display("New Prompt: " + prompt.getPrompt() + " was sucessfully updated \n");
+	}
+	
+	private void editChoices() {
+		output.display("Which choice would you want to edit? ");
+		for(int i =0; i < this.questionOptions.size(); i++) {
+			output.displayOneLine(i+1 +  ")" );
+			this.questionOptions.get(i).display();
+		}
+		
+		int userChoice =input.getIntegerInput();
+		QuestionOptions userSelectedOption = this.questionOptions.get(userChoice-1);
+		output.displayOneLine("Current Choice Optiont: ");
+		userSelectedOption.display();
+		
+		output.display("Please Enter The New Choice Option");
+		String newUserChoiceOption = input.getInput();
+		QuestionOptions option = new QuestionOptions(newUserChoiceOption);
+		this.questionOptions.set(userChoice-1, option);
+	
+	}
 }

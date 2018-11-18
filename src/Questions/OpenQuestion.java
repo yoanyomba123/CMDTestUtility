@@ -63,4 +63,25 @@ public class OpenQuestion extends Question{
 		
 	}
 	
+	private void editPrompt() {
+		output.display("Current Prompt: " + prompt.getPrompt());
+		output.display("Please enter a new prompt to edit \n");
+		String userInputPrompt = input.getInput();
+		prompt.setPrompt(userInputPrompt);
+		output.display("New Prompt: " + prompt.getPrompt() + " was sucessfully updated \n");
+	}
+
+	@Override
+	public void edit() {
+		menu.promptEditOne();
+		String userInput = input.getInput();
+		switch(userInput) {
+			case "1":
+				editPrompt();
+				break;	
+			default:
+				break;
+		}
+	}
+	
 }

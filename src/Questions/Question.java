@@ -22,6 +22,7 @@ import Response.Response;
  * @version	1.0.0
  */
 public abstract class Question implements Serializable{
+	private static final long serialVersionUID = 13L;
 	ConsoleInput input = new ConsoleInput();
 	ConsoleOutput output = new ConsoleOutput();
 	Menu menu = new Menu();
@@ -41,6 +42,9 @@ public abstract class Question implements Serializable{
 	
 	public abstract void display();
 	public abstract void take();
+	public abstract void edit();
+
+	
 
 	
 	public void getPromptFromAdmin(ConsoleInput input) {

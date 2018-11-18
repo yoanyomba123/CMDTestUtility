@@ -5,7 +5,7 @@ import java.io.Serializable;
 import IO.ConsoleOutput;
 
 public class QuestionOptions<T> implements Serializable{
-
+	private static final long serialVersionUID = 14L;
 	T questionOptions;
 	ConsoleOutput output = new ConsoleOutput();
 	Integer rank = null;

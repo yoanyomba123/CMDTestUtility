@@ -54,7 +54,6 @@ public class main {
                 case "3":
                     output.display("Which survey would you like to load?");
                     survey = Survey.load();
-          
                     break;
                 case "4":
                     if(survey != null) {
@@ -64,8 +63,27 @@ public class main {
                         output.display("No Survey To Save");
                     break;
                 case "5":
-                    quit();
+                    output.display("Which survey would you like to edit?");
+                    survey = Survey.load();
+                    survey.edit();
                     break;
+
+                case "6":
+                	output.display("Which survey would you like to take?");
+                    survey = Survey.load();
+                    survey.take();
+                    break;
+                /*
+                case "7":
+                    output.display("Which survey would you like to tabulate?");
+                    survey = Survey.load();
+                    if (survey != null)
+                        survey.tabulate();
+                    break;
+                */
+                case "8":
+                    quit();
+break;
                 default:
                     break;
              }
@@ -124,8 +142,33 @@ public class main {
 	                        output.display("No test To Save");
 	                    break;
 	                case "5":
-	                    quit();
+	                    output.display("Which test would you like to modify?");
+	                    test = Test.load(Test.getFolderName());
+	                    test.edit();
 	                    break;
+
+	                case "6":
+	                    output.display("Which test would you like to take?");
+	                    test = Test.load(Test.getFolderName());
+	                    test.take();
+	                    break;
+	                /*
+	                case "7":
+	                    output.display("Which test would you like to tabulate?");
+	                    test = Test.load(Test.getFolderName());
+	                    if (test != null)
+	                        test.tabulate();
+	                    break;
+	                case "8":
+	                    Test temp = null;
+	                    output.display("Which test would you like to grade?");
+	                    temp = Test.load("test_taken");
+	                    temp.grade();
+	                    break;
+	                */
+	                case "9":
+	                    quit();
+	                    	break;
 	                default:
 	                    break;
 	             }

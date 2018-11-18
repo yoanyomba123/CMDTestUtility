@@ -13,6 +13,7 @@ import IO.ConsoleOutput;
  */
 
 public class Response <T> implements Serializable{
+	private static final long serialVersionUID = 15L;
 	ConsoleOutput output = new ConsoleOutput();
 	T response;
 	

@@ -10,6 +10,7 @@ public abstract class Input<T> implements Serializable {
 	 * Defines an abstract method to process inputs
 	 * @return T
 	 */
+	private static final long serialVersionUID = 1L;
 	public abstract T getInput();
 	
 }

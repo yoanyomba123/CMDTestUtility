@@ -8,7 +8,8 @@ import java.io.Serializable;
  * 
  */
 public abstract class Output<T> implements Serializable {
-	
+		
+	private static final long serialVersionUID = 11L;
 	/*
 	 * Abstract method to display a singular object to user
 	 * <p>

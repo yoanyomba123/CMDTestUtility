@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.Serializable;
 
 public class DirectoryFileList implements Serializable{
-	
+    private static final long serialVersionUID = 16;
 	String folderName = null;
 
 	

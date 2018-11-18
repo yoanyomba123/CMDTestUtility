@@ -11,6 +11,7 @@ import IO.ConsoleOutput;
  */
 
 public class Menu implements Serializable{
+	private static final long serialVersionUID = 12L;
 	ConsoleOutput output =  new ConsoleOutput();
 	
 	/*
@@ -32,12 +33,12 @@ public class Menu implements Serializable{
 	}
 	
 	public void surveyMenu() {
-		String[] surveyMenuOptions = {"\nSurvey Menu 2:\n", "1) Create a new Survey", "2) Display a Survey", "3) Load a Survey", "4) Save a Survey", "5) Quit"};
+		String[] surveyMenuOptions = {"\nSurvey Menu 2:\n", "1) Create a new Survey", "2) Display a Survey", "3) Load a Survey", "4) Save a Survey", "5) Modify An Existing Survey", "6) Take A Survey", "7) Tabulate a Survey", "8) Quit"};
 		output.display(surveyMenuOptions);
 	}
 	
 	public void testMenu() {
-		String[] testMenuOptions = {"\nTest Menu 2:\n", "1) Create a new Test", "2) Display a Test", "3) Load a Test", "4) Save a Test", "5) Quit"};
+		String[] testMenuOptions = {"\nTest Menu 2:\n", "1) Create a new Test", "2) Display a Test", "3) Load a Test", "4) Save a Test", "5) Modify An Existing Test", "6) Take A Test", "7) Tabulate a Test", "8) Grade a Test", "9) Quit"};
 		output.display(testMenuOptions);
 	}
 	
@@ -102,7 +103,17 @@ public class Menu implements Serializable{
 		output.display(promptRankTheFollowing);
 	}
 	
-	
+	/*
+	 * Edit Test & Survey Prompts
+	 */
+	public void promptWhichQuestionToEdit() {
+		String[] promptWhichQuestionToEdit = {"Specify The Question You Wish To Edit"};
+		output.display(promptWhichQuestionToEdit);
+	}
+	public void promptEditOne() {
+		String[] promptEditOne = {"Please Edit one of the Choices Present Below \n 1) Prompt\n 2) Choices"};
+		output.display(promptEditOne);
+	}
 	
 	//@Comeback here and edit the rest of this
 	/*

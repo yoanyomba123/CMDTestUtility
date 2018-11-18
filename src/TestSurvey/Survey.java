@@ -34,6 +34,7 @@ import Utilities.DirectoryFileList;
  * @version 1.0.0
  */
 public class Survey implements Serializable{
+    private static final long serialVersionUID = 6529685098267757690L;
 	static ConsoleInput input = new ConsoleInput();
 	static ConsoleOutput output = new ConsoleOutput();
 	String surveyName = null;
@@ -116,6 +117,7 @@ public class Survey implements Serializable{
 	         validChoice = true;
 	      } catch (IOException i) {
 	         output.display("IOEXCEPTION ENCOUNTERED");
+	         output.display(i.getMessage());
 	      } catch (ClassNotFoundException c) {
 	         System.out.println("Survey Class Not Found");
 	      } catch(NumberFormatException n) {
@@ -239,6 +241,23 @@ public class Survey implements Serializable{
 		
 		save(this.folderName, this.surveyName);
 		save("survey_was_taken", saveName);
+		
+	}
+	
+	public void edit() {
+		if(questions.size() == 0) {
+			output.display("There Are Currently No Present Questions To Edit \n");
+		}
+		else {
+			menu.promptWhichQuestionToEdit();
+			for(int i = 0; i < questions.size(); i++) {
+				output.displayOneLine(Integer.toString(i+1) + ")" );
+				questions.get(i).getPrompt().display();;
+			}
+			int userInput = input.getIntegerInput();
+			output.display("CALLING QUESTIONS.EDIT() ");
+			questions.get(userInput-1).edit();
+		}
 		
 	}
 	

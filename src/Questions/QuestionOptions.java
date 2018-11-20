@@ -7,6 +7,7 @@ import IO.ConsoleOutput;
 public class QuestionOptions<T> implements Serializable{
 	private static final long serialVersionUID = 14L;
 	T questionOptions;
+	Object Data;
 	ConsoleOutput output = new ConsoleOutput();
 	Integer rank = null;
 	
@@ -15,6 +16,7 @@ public class QuestionOptions<T> implements Serializable{
 	}
 	
 	public void setQuestionOptions(T questionOptions) {
+		this.Data = (String) questionOptions;
 		this.questionOptions = questionOptions;
 	}
 	
@@ -32,6 +34,10 @@ public class QuestionOptions<T> implements Serializable{
 	
 	public int getRank() {
 		return this.rank;
+	}
+	
+	public Object getData() {
+		return this.Data;
 	}
 	
 }

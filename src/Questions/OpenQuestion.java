@@ -1,12 +1,16 @@
 package Questions;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import Response.Response;
 
 public class OpenQuestion extends Question{
 
 	Integer wordLimit;
 	Integer DEFAULTLIMIT = 100;
-	
+	HashMap<String,Integer> tabulateMap = new HashMap<>();
+
 	public OpenQuestion() { 
 		this.wordLimit = DEFAULTLIMIT;
 	}
@@ -37,9 +41,9 @@ public class OpenQuestion extends Question{
 	public void display() {
 		// TODO Auto-generated method stub
 		getPrompt().display();
-		for(Object response : super.userResponse) {
-			((OpenQuestion) response).display();
-		}
+		/*for(Object response : super.userResponse) {
+			((Response) response).display();
+		}*/
 		//output.display(super.userResponse);
 	}
 
@@ -56,12 +60,28 @@ public class OpenQuestion extends Question{
             	userResponse.remove(userResponselength-1);
                 throw new IllegalStateException();
             }
+            
+            if(inHashMap(userChoice)) {
+            	int value = tabulateMap.get(userChoice) + 1;
+            	tabulateMap.put(userChoice, value);
+            }
+            else {
+            	tabulateMap.put(userChoice, 1);
+            }
+            
         } catch (IllegalStateException e) {
             output.display("Not a Valid Answer");
             take();
         }
 		
 	}
+	public boolean inHashMap(String value) {
+		if(tabulateMap.keySet().contains(value)) {
+			return true;
+		}
+		return false;
+	}
+	
 	
 	private void editPrompt() {
 		output.display("Current Prompt: " + prompt.getPrompt());
@@ -83,5 +103,19 @@ public class OpenQuestion extends Question{
 				break;
 		}
 	}
+	
+	@Override
+	public int grade(Object correctAnswers) {
+		return -1;
+	}
+
+	@Override
+	public int grade(Response response) {
+		// TODO Auto-generated method stub
+		return -1;
+	}
+
+
+	
 	
 }

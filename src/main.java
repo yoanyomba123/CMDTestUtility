@@ -40,7 +40,7 @@ public class main {
         	menu.surveyMenu();
             String userChoice = input.getInput();
             Integer numericInputValue = Integer.parseInt(userChoice);
-            if(numericInputValue > 6 || numericInputValue < 1) {
+            if(numericInputValue > 9 || numericInputValue < 1) {
             	throw new IllegalStateException();
             }
             switch (userChoice) {
@@ -65,7 +65,13 @@ public class main {
                 case "5":
                     output.display("Which survey would you like to edit?");
                     survey = Survey.load();
+                    output.display("EDITED!!!!");
                     survey.edit();
+                    if(survey != null) {
+                        survey.save(survey.getFolderName() , survey.getSurveyName());
+                    }
+                    else
+                        output.display("No Survey To Save");
                     break;
 
                 case "6":
@@ -73,17 +79,15 @@ public class main {
                     survey = Survey.load();
                     survey.take();
                     break;
-                /*
                 case "7":
                     output.display("Which survey would you like to tabulate?");
                     survey = Survey.load();
                     if (survey != null)
                         survey.tabulate();
                     break;
-                */
                 case "8":
                     quit();
-break;
+                    break;
                 default:
                     break;
              }
@@ -111,7 +115,7 @@ break;
 	        	menu.testMenu();
 	            String userChoice = input.getInput();
 	            Integer numericInputValue = Integer.parseInt(userChoice);
-	            if(numericInputValue > 6 || numericInputValue < 1) {
+	            if(numericInputValue > 9 || numericInputValue < 1) {
 	            	throw new IllegalStateException();
 	            }
 	            switch (userChoice) {
@@ -143,8 +147,21 @@ break;
 	                    break;
 	                case "5":
 	                    output.display("Which test would you like to modify?");
-	                    test = Test.load(Test.getFolderName());
+	                    String folderName1 = test.getFolderName();
+	                    Test testTemp1 = Test.load(folderName1);
+	                    //output.display(test);
+	                    if(testTemp1 == null) {
+	                    	menu.testMenu();
+	                    }
+	                    else {
+	                    	test = testTemp1;
+	                    }
 	                    test.edit();
+	                    if(test != null) {
+	                    	test.save(test.getFolderName() , test.getSurveyName());
+	                    }
+	                    else
+	                        output.display("No test To Save");
 	                    break;
 
 	                case "6":
@@ -152,7 +169,7 @@ break;
 	                    test = Test.load(Test.getFolderName());
 	                    test.take();
 	                    break;
-	                /*
+	                
 	                case "7":
 	                    output.display("Which test would you like to tabulate?");
 	                    test = Test.load(Test.getFolderName());
@@ -162,10 +179,10 @@ break;
 	                case "8":
 	                    Test temp = null;
 	                    output.display("Which test would you like to grade?");
-	                    temp = Test.load("test_taken");
+	                    temp = Test.load("test_was_taken");
 	                    temp.grade();
 	                    break;
-	                */
+	                
 	                case "9":
 	                    quit();
 	                    	break;

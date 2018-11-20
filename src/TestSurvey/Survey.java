@@ -8,6 +8,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import IO.ConsoleInput;
 import IO.ConsoleOutput;
@@ -18,11 +19,13 @@ import Questions.ChoiceQuestion;
 import Questions.Essay;
 import Questions.Matching;
 import Questions.MultipleChoice;
+import Questions.OpenQuestion;
 import Questions.Question;
 import Questions.QuestionOptions;
 import Questions.Ranking;
 import Questions.ShortAnswer;
 import Questions.TrueFalse;
+import Response.Response;
 import Utilities.DirectoryFileList;
 
 
@@ -37,6 +40,7 @@ public class Survey implements Serializable{
     private static final long serialVersionUID = 6529685098267757690L;
 	static ConsoleInput input = new ConsoleInput();
 	static ConsoleOutput output = new ConsoleOutput();
+	private HashMap<Question,Object> tabulate = new HashMap<>();
 	String surveyName = null;
 	Menu menu = new Menu();
 	static String folderName = "survey";
@@ -254,12 +258,66 @@ public class Survey implements Serializable{
 				output.displayOneLine(Integer.toString(i+1) + ")" );
 				questions.get(i).getPrompt().display();;
 			}
-			int userInput = input.getIntegerInput();
-			output.display("CALLING QUESTIONS.EDIT() ");
-			questions.get(userInput-1).edit();
+			
+			try {
+                Integer choice = input.getIntegerInput();
+                Question question = questions.get(choice-1);
+    			question.edit();
+    			question.display();
+    			questions.set(choice-1,question);
+            }
+
+            catch (NumberFormatException e) {
+                output.display("Input a Number");
+                edit();
+            }
+
+            catch (IndexOutOfBoundsException e) {
+                output.display("Not a valid question choice");
+                edit();
+            }
+			
+
 		}
 		
 	}
+	
+	public void tabulate() {
+
+		HashMap<String, Integer> map = null;;
+        for (int i = 0; i < questions.size(); i++) {
+            questions.get(i).getPrompt().display();
+        	if(questions.get(i) instanceof ChoiceQuestion) {
+        		((ChoiceQuestion) questions.get(i)).tabulate();
+        	}
+        	else {
+        		if(questions.get(i) instanceof Essay) {
+        			((Essay) questions.get(i)).tabulate();
+        		}
+        		else {
+        			((ShortAnswer) questions.get(i)).tabulate();
+        		}
+        	}
+
+        }
+	}
+	private void tabulateIt(Question question) {
+		if(!(question instanceof Ranking) && !(question instanceof Matching) ) {
+			for (Object item: question.getUserResponses()) {
+				((Response) item).display();
+			}
+		}
+		else {
+			ArrayList<Object> value = question.getUserResponses();
+			for (int i =0; i < value.size(); i++) {
+				ArrayList<Object> inner = (ArrayList<Object>) value.get(i);
+				for(int j =0; j < inner.size(); j++ ) {
+					((Response) inner.get(j)).display();
+				}
+			}
+		}
+	}
+	
 	
 	public Menu getMenu() {
 		return menu;
@@ -308,4 +366,6 @@ public class Survey implements Serializable{
 	public String getSurveyName(){
 		return this.surveyName;
 	}
+	
+
 }

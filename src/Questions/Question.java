@@ -2,6 +2,7 @@ package Questions;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import IO.ConsoleInput;
 import IO.ConsoleOutput;
@@ -22,14 +23,19 @@ import Response.Response;
  * @version	1.0.0
  */
 public abstract class Question implements Serializable{
-	private static final long serialVersionUID = 13L;
-	ConsoleInput input = new ConsoleInput();
-	ConsoleOutput output = new ConsoleOutput();
+	private static final long serialVersionUID = 55L;
+	static ConsoleInput input = new ConsoleInput();
+	static ConsoleOutput output = new ConsoleOutput();
+	ArrayList<Object> correctAnswer = new ArrayList<>();
+
+
+	private HashMap<Question,ArrayList<Object>> tabulate = new HashMap<>();
 	Menu menu = new Menu();
 	QuestionPrompt prompt;
 	String questionType;
 	ArrayList<Object> userResponse;
-	
+	HashMap<String,Integer>  tabulateMap;
+
 	/*
 	 * Defining Question Constructor
 	 * @param none
@@ -38,6 +44,7 @@ public abstract class Question implements Serializable{
 	public Question() {
 		this.prompt = new QuestionPrompt();
 		this.userResponse = new ArrayList();
+		this.tabulateMap = new HashMap<>();
 	}
 	
 	public abstract void display();
@@ -76,6 +83,43 @@ public abstract class Question implements Serializable{
 	public String getQuestionType() {
 		return this.questionType;
 	}
+	
+	public Boolean isInTabulate(Question question) {
+		if(tabulate.containsKey(question)){
+			return true;
+		}
+		return false;
+	}
+	
+	public void addToTabulate(Question question, Object response) {
+		if(isInTabulate(question)) {
+			ArrayList<Object> value = tabulate.get(question);
+			value.add(response);
+			tabulate.put(question, value);
+		}
+		else{
+			ArrayList<Object> value = new ArrayList();
+			value.add(response);
+			tabulate.put(question, value);
+		}
+	}
+	public void displayTabulationResults() {
+		for(Object item: getTabulate()) {
+			output.display(item);
+		}
+	}
+	
+	public ArrayList<Object> getTabulate() {
+		return tabulate.get(this);
+	}
+
+	public void setTabulate(HashMap<Question, ArrayList<Object>> tabulate) {
+		this.tabulate = tabulate;
+	}
+
+	public abstract int grade(Object object);
+
+	public abstract int grade(Response response);
 	
 	
 }

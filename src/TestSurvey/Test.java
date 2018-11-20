@@ -22,6 +22,7 @@ import Utilities.DirectoryFileList;
 public class Test extends Survey{
 	static String folderName = "test";
 	ArrayList<Object> correctAnswer = new ArrayList<>();
+    String[] alphabeticOptions = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
 
 	public Test() {
 		this.folderName = folderName;
@@ -80,11 +81,15 @@ public class Test extends Survey{
 				menu.promptQuestionMenu(questionType);
 				String userDefinedPrompt = input.getInput();
 				question.setPrompt(userDefinedPrompt);
-				
+				Object questioCorrectAnswer = null;
 				if(question instanceof ChoiceQuestion && !(question instanceof TrueFalse)) {
 					if(question instanceof Ranking) {
 						((Questions.ChoiceQuestion) question).getQuestionOptionsFromAdmin();
 						((Questions.ChoiceQuestion) question).getQuestionRankFromAdmin();
+						 questioCorrectAnswer = ((Questions.ChoiceQuestion) question).getCorrectAnswersForThis();
+						 output.display("PRINTING THE CORRECT ANSWER FOR RANKING");
+						 ((Response) ((ArrayList<Object>) questioCorrectAnswer).get(0)).display();
+						 correctAnswer.add(((ArrayList<Object>) questioCorrectAnswer).get(0));
 					}
 					else if(question instanceof Matching) {
 						((Questions.Matching) question).getQuestionOptionsFromAdmin();
@@ -95,14 +100,33 @@ public class Test extends Survey{
 					
 				}
 				if(!(question instanceof OpenQuestion) && !(question instanceof Ranking)) {
-					Object questioCorrectAnswer = null;
+					output.display("How Many Answers Approximately?");
+					int vl = Integer.valueOf(input.getInput());
 					if(!(question instanceof TrueFalse)) {
-						 questioCorrectAnswer = ((Questions.ChoiceQuestion) question).getMultipleCorrectAnswerFromAdmin();
+						if(vl > 1) {
+							 questioCorrectAnswer = ((Questions.ChoiceQuestion) question).getMultipleCorrectAnswerFromAdmin();
+						}
+						else {
+							 questioCorrectAnswer = ((Questions.ChoiceQuestion) question).getSingleCorrectAnswerFromAdmin();
+						}
 					}
 					else {
 						 questioCorrectAnswer = ((Questions.ChoiceQuestion) question).getSingleCorrectAnswerFromAdmin();
 					}
-					correctAnswer.add(questioCorrectAnswer);
+					
+					if(question instanceof Matching) {
+						output.display("MATCHING LETS PRINT OUT THE CORRECT ANSWERS YOAN");
+						String order = "";
+						for(Object item: (ArrayList<Object>) questioCorrectAnswer) {
+							order = order + ((Response) item).getData() + "|";
+						}
+						order = order.substring(0, order.length()-1);
+						Response answer = new Response(order);
+						output.display(order);
+						correctAnswer.add(answer);
+					}else{
+						correctAnswer.add(questioCorrectAnswer);
+					}
 
 				}
 				else {
@@ -184,22 +208,26 @@ public class Test extends Survey{
 		for(Question question : questions) {
 			output.display(question.getQuestionType() + ":");
 			output.displayOneLine(counter + ") ");
-			question.display();
+			if(!(question instanceof Matching)) {
+				question.display();
+			}
 			if(question instanceof ChoiceQuestion) {
 				if(question instanceof Ranking) {
 					ArrayList<QuestionOptions> options = ((Ranking) question).getQuestionOptions();
 					for(QuestionOptions option: options) {
-						output.display(counter + ") " + option.getQuestionOptions());
+						output.display(alphabeticOptions[counter] + ") " + option.getQuestionOptions());
 						counter++;
 					}
 					counter = 0;
 					for(QuestionOptions option: options) {
-						output.display("Correct Answer: " + counter + ") " + option.getQuestionOptions() + " Rank " + option.getRank());
+						output.display("Correct Answer of Rank " + option.getRank() + ") " + option.getQuestionOptions() + " Rank " + option.getRank());
 						counter++;
 					}
 				}
 				else if(question instanceof Matching) {
 					((Matching) question).display();
+					Response answers = (Response) correctAnswer.get(counter);
+					answers.display();
 				}
 				else {
 					Object answers = correctAnswer.get(counter);
@@ -222,6 +250,62 @@ public class Test extends Survey{
 			}			
 		}
 	}
+	
+	public void take() {
+		Integer counter = 0;
+		menu.promptEnterNameOfUser(getType());
+		setUserName(input.getInput());
+		
+		output.display("\t" + getSurveyName());
+		output.display("------------------------------------------------\n");
+		
+		for(Question question : questions) {
+			output.display(question.getQuestionType() + ":");
+			output.display(counter + ")");
+			
+			question.display();
+			question.take();
+		}
+		
+		String saveName = getSurveyName() + "_" + getUserName();
+		
+		save(this.folderName, this.surveyName);
+		save("test_was_taken", saveName);
+		
+	}
+	
+	public void grade() {
+		int grade = 0;
+		int numCantBeGraded = 0;
+		output.display("GRADING-------------------------------");
+		for(int i = 0; i < questions.size(); i++) {
+			/*
+			if(correctAnswer.get(i) instanceof Response) {
+				output.displayOneLine("GOING TO PRINT THE CORRECT ANSWER\n");
+				output.display(questions.size() + " QUESTION SIZE");
+				((Response) correctAnswer.get(i)).display();
+			}
+			
+			output.display("CALLING QUESTION.GRADE()");
+			*/
+			Question question = questions.get(i);
+			int val = question.grade(correctAnswer.get(i));
+			if(val == -1) {
+				numCantBeGraded += 1;
+			}
+			else {
+				grade += val;
+			}
+		}
+		
+		output.displayOneLine(String.valueOf(grade * 10) + '/' +  String.valueOf((questions.size() - numCantBeGraded)*10));
+	}
+	
+	public void tabulate() {
+		super.tabulate();
+	}
+	
+	
 	
 	
 }

@@ -13,7 +13,8 @@ import IO.ConsoleOutput;
 public class Menu implements Serializable{
 	private static final long serialVersionUID = 12L;
 	ConsoleOutput output =  new ConsoleOutput();
-	
+    String[] alphabeticOptions = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+
 	/*
 	 * Define Constructor
 	 */
@@ -68,13 +69,23 @@ public class Menu implements Serializable{
 	}
 	
 	public void promptCorrectAnswerMenu(String questionType) {
+		
 		String[] promptCorrectAnswerMenu = {"Number of correct Answers for current" + questionType +  " question"};
 		output.display(promptCorrectAnswerMenu);
 	}
 	
 	public void promptEnterChoiceMenu(int choiceNum) {
-		String[] promptEnterChoice = {"Enter choice #" + (choiceNum + 1) +  ":"};
+		String[] promptEnterChoice = {"Enter choice " + alphabeticOptions[choiceNum]  +  ":"};
 		output.display(promptEnterChoice);
+	}
+	public void promptEnterChoiceMenuOrig(int choiceNum) {
+		String[] promptEnterChoice = {"Enter choice " + String.valueOf((choiceNum)) +  ":"};
+		output.display(promptEnterChoice);
+	}
+	
+	public void promptEnterCorrectAnswerMenu(int choiceNum, int numOptions) {
+		String[] promptEnterCorrectAnswer = {"Enter Correct Answer #" + (choiceNum + 1) +  ":" + "   Note: Answer must Range from A to " + alphabeticOptions[numOptions] +  " If Question is Ranking Must Input in the following format - ex: 1A ex: 2B"};
+		output.display(promptEnterCorrectAnswer);
 	}
 	
 	public void promptEnterCorrectAnswerMenu(int choiceNum) {

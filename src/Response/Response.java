@@ -15,7 +15,9 @@ import IO.ConsoleOutput;
 public class Response <T> implements Serializable{
 	private static final long serialVersionUID = 15L;
 	ConsoleOutput output = new ConsoleOutput();
+
 	T response;
+	String data;
 	
 	/*
 	 * Response constructor 
@@ -24,6 +26,7 @@ public class Response <T> implements Serializable{
 	 * @return None
 	 */
 	public Response(T userInputData) {
+		this.data = (String) userInputData;
 		this.response = userInputData;
 	}
 	
@@ -44,6 +47,7 @@ public class Response <T> implements Serializable{
 	 * @return None
 	 */
 	public void setResponseData(T responseData) {
+		this.data = String.valueOf(responseData);
 		this.response = responseData;
 	}
 	
@@ -52,5 +56,23 @@ public class Response <T> implements Serializable{
 	 */
 	public T getResponseData() {
 		return this.response;
+	}
+	
+	public String getData() {
+		return this.data;
+	}
+	
+	public boolean equals(Response response) {
+		if(this.response.equals(response)) {
+			return true;
+		}
+		return false;
+	}
+	
+	public boolean equals(String response) {
+		if(this.data.equals(response)) {
+			return true;
+		}
+		return false;
 	}
 }

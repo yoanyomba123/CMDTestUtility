@@ -1,6 +1,7 @@
 package Questions;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import IO.ConsoleInput;
 import Response.Response;
@@ -9,8 +10,9 @@ public class MultipleChoice extends ChoiceQuestion{
 
 	Boolean takeMultipleResponses = false;
     String[] alphabeticOptions = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
-	ConsoleInput input = new ConsoleInput();
 
+    static ConsoleInput input = new ConsoleInput();
+    
 	public MultipleChoice() {
 		super();
 		this.takeMultipleResponses = takeMultipleResponses;
@@ -42,23 +44,32 @@ public class MultipleChoice extends ChoiceQuestion{
         if (this.takeMultipleResponses == true ) {
         	takeWithMultipleAnswers();
         }
+        else if (Multipleflag == true) {
+        	takeWithMultipleAnswers();
+        }
         else {
             ArrayList<String> multipleChoices = new ArrayList<>();
-            display();
 
             try {
-                // Gets Multiple choice options for given question -- Returns A -> D if question has 4 options
                 for (int i = 0; i < questionOptions.size(); i++) {
                     multipleChoices.add(alphabeticOptions[i]);
+                    if(!(tabulateMap.containsKey(alphabeticOptions[i]))) {
+                    	tabulateMap.put(alphabeticOptions[i], 0);
+                    	
+                    }
                 }
-
-                String userChoice = input.getInput().toUpperCase();
+                
+                String userChoice = super.input.getInput().toUpperCase();
                 Response newResponse = new Response(userChoice);
-
-                if (!multipleChoices.contains(input))
+                
+                
+                if (!multipleChoices.contains(userChoice))
                     throw new IllegalStateException();
                 userResponse.add(newResponse);
+                tabulateMap.put(userChoice, tabulateMap.get(userChoice)+1);
+                output.display(String.valueOf(tabulateMap.get(userChoice)));
             } catch (IllegalStateException e) {
+            	
                 output.display("Not a Valid Answer");
                 take();
             }
@@ -67,7 +78,6 @@ public class MultipleChoice extends ChoiceQuestion{
 	
 	protected void takeWithMultipleAnswers() {
         ArrayList<String> multipleChoices = new ArrayList<>();
-        display();
         Integer numOfOptions = super.getNumberOfQuestionOptions();
         String mcOrder = "";
         output.display("Please give " + numOfOptions  + " choices: ");
@@ -75,6 +85,9 @@ public class MultipleChoice extends ChoiceQuestion{
 
         	 for (int i = 0; i < questionOptions.size(); i++) {
                  multipleChoices.add(alphabeticOptions[i]);
+                 if(!(tabulateMap.containsKey(alphabeticOptions[i]))) {
+                 	tabulateMap.put(alphabeticOptions[i], 0);
+                 }
              }
 
             for (int i = 0; i < numOfOptions; i++) {
@@ -82,15 +95,12 @@ public class MultipleChoice extends ChoiceQuestion{
                 String userChoiceInput = input.getInput().toUpperCase();
                 Response newResponse = new Response(userChoiceInput);
                 
+
                 if (!multipleChoices.contains(userChoiceInput))
                     throw new IllegalStateException();
-                if (wasResponseChosenTwice(userChoiceInput))
-                    throw new SetSameAnswerTwiceException();
                 userResponse.add(newResponse);
+                tabulateMap.put(userChoiceInput, tabulateMap.get(userChoiceInput)+1);
             }
-        } catch (SetSameAnswerTwiceException e) {
-            output.display("Multiple choice can only be used once");
-            takeWithMultipleAnswers();
         } catch (IllegalStateException e) {
         	output.display("Not a Valid Answer");
         	takeWithMultipleAnswers();
@@ -121,4 +131,11 @@ public class MultipleChoice extends ChoiceQuestion{
 		}
 		return false;
 	}
+	
+	public void edit() {
+		super.edit();
+	}
+	
+
+	
 }

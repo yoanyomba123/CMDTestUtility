@@ -87,4 +87,10 @@ public class ConsoleOutput extends Output{
 	public void printOneColumn(String column) {
 		System.out.printf("%-15s\n", column);
 	}
+
+	public void printTwoColumns(Object column1, Object column2) {
+		String columnInit1 = (String) column1;
+		String columnInit2 = (String) column2;
+		printTwoColumns( columnInit1,  columnInit2);		
+	}
 }
